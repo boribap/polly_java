@@ -8,12 +8,7 @@ import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.polly.AmazonPollyClient;
-import com.amazonaws.services.polly.model.DescribeVoicesRequest;
-import com.amazonaws.services.polly.model.DescribeVoicesResult;
-import com.amazonaws.services.polly.model.OutputFormat;
-import com.amazonaws.services.polly.model.SynthesizeSpeechRequest;
-import com.amazonaws.services.polly.model.SynthesizeSpeechResult;
-import com.amazonaws.services.polly.model.Voice;
+import com.amazonaws.services.polly.model.*;
 
 import javazoom.jl.player.advanced.AdvancedPlayer;
 import javazoom.jl.player.advanced.PlaybackEvent;
@@ -22,25 +17,18 @@ import javazoom.jl.player.advanced.PlaybackListener;
 public class PollyDemo {
 
     private final AmazonPollyClient polly;
-    private final Voice voice;
-    private static final String SAMPLE = "폴리";
+    private static final String SAMPLE = "정면을 바라봐주세요";
 
     public PollyDemo(Region region) {
         // create an Amazon Polly client in a specific region
         polly = new AmazonPollyClient(new DefaultAWSCredentialsProviderChain(),
                 new ClientConfiguration());
         polly.setRegion(region);
-        // Create describe voices request.
-        DescribeVoicesRequest describeVoicesRequest = new DescribeVoicesRequest();
-
-        // Synchronously ask Amazon Polly to describe available TTS voices.
-        DescribeVoicesResult describeVoicesResult = polly.describeVoices(describeVoicesRequest);
-        voice = describeVoicesResult.getVoices().get(0);
     }
 
     public InputStream synthesize(String text, OutputFormat format) throws IOException {
         SynthesizeSpeechRequest synthReq =
-                new SynthesizeSpeechRequest().withText(text).withVoiceId(voice.getId())
+                new SynthesizeSpeechRequest().withText(text).withVoiceId(VoiceId.Seoyeon)
                         .withOutputFormat(format);
         SynthesizeSpeechResult synthRes = polly.synthesizeSpeech(synthReq);
 
