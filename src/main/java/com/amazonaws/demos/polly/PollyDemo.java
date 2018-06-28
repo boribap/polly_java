@@ -17,7 +17,7 @@ import javazoom.jl.player.advanced.PlaybackListener;
 public class PollyDemo {
 
     private final AmazonPollyClient polly;
-    private static final String SAMPLE = "정면을 바라봐주세요";
+    private static final String GUIDELINE = "정면을 바라봐주세요";
 
     public PollyDemo(Region region) {
         // create an Amazon Polly client in a specific region
@@ -27,6 +27,7 @@ public class PollyDemo {
     }
 
     public InputStream synthesize(String text, OutputFormat format) throws IOException {
+        // fix voiceId with Seoyeon (korean)
         SynthesizeSpeechRequest synthReq =
                 new SynthesizeSpeechRequest().withText(text).withVoiceId(VoiceId.Seoyeon)
                         .withOutputFormat(format);
@@ -39,7 +40,7 @@ public class PollyDemo {
         //create the test class
         PollyDemo helloWorld = new PollyDemo(Region.getRegion(Regions.US_EAST_1));
         //get the audio stream
-        InputStream speechStream = helloWorld.synthesize(SAMPLE, OutputFormat.Mp3);
+        InputStream speechStream = helloWorld.synthesize(GUIDELINE, OutputFormat.Mp3);
 
         //create an MP3 player
         AdvancedPlayer player = new AdvancedPlayer(speechStream,
@@ -48,17 +49,17 @@ public class PollyDemo {
         player.setPlayBackListener(new PlaybackListener() {
             @Override
             public void playbackStarted(PlaybackEvent evt) {
-                System.out.println("Playback started");
-                System.out.println(SAMPLE);
+                System.out.println("음성 출력 시작");
+                System.out.println(GUIDELINE);
             }
 
             @Override
             public void playbackFinished(PlaybackEvent evt) {
-                System.out.println("Playback finished");
+                System.out.println("음성 출력 끝");
             }
         });
 
-        // play it!
+        // play
         player.play();
     }
 }
